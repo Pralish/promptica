@@ -1,10 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import User
+from user.models import CustomUser
 
 
 
 class Conversation(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE,)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,)
     label = models.TextField(max_length=200)
     last_message = models.TextField(default="No Last Message Found.")
     created_at = models.DateTimeField(auto_now_add=True)

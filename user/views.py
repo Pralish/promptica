@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User
+from .models import CustomUser
 from django.http import JsonResponse
 from rest_framework import generics, permissions
 from rest_framework.response import Response
@@ -11,7 +11,7 @@ from rest_framework import status
 
 
 class SignUpView(generics.CreateAPIView):
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.AllowAny]
     
