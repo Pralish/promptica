@@ -107,7 +107,7 @@ OPENAI_API_KEY = env('OPENAI_API_KEY')
 
 AUTH_USER_MODEL = 'user.CustomUser'
 
-# AUTHENTICATION_BACKENDS = ['users.backends.EmailBackend']
+AUTHENTICATION_BACKENDS = ['user.backends.EmailBackend']
 
 
 # Password validation

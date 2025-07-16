@@ -29,11 +29,12 @@ class SignUpView(generics.CreateAPIView):
 
 class SignInView(APIView):
     permission_classes = [permissions.AllowAny]
+    username_field = 'email'
 
     def post(self, request, *args, **kwargs):
-        username = request.data.get('username')
+        email = request.data.get('email')
         password = request.data.get('password')
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, email=email, password=password)
 
         if user:
             login(request, user)
