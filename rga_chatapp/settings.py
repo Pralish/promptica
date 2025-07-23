@@ -68,6 +68,9 @@ ROOT_URLCONF = 'rga_chatapp.urls'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
+CORS_ALLOW_CREDENTIALS = True
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

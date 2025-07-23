@@ -57,6 +57,19 @@ class ConversationView(APIView):
 class MessageView(APIView):
     permission_classes = [IsAuthenticated]
 
+    def patch(self, request, *args, **kwargs):
+        message_id =  request.data.get('message_id', 0)
+        message = Message.objects.filter(id=message_id, conversation__user=request.user).first()
+
+        if message is None:
+            return Response({'detail': 'Message not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = MessageSerializer(message, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     def post(self, request, *args, **kwargs):
         conversation_id =  request.data.get('conversation_id', 0)
         conversation = Conversation.objects.filter(id=conversation_id, user=request.user).first()
