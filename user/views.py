@@ -5,7 +5,7 @@ from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
-from .serializers import UserSerializer, PasswordResetSerializer, PasswordResetConfirmSerializer
+from .serializers import UserSerializer, PasswordResetSerializer, PasswordResetConfirmSerializer, UserUpdateSerializer
 from rest_framework import status
 
 
@@ -59,6 +59,19 @@ class CurrentUserView(APIView):
             'access': token.key
         }, status=status.HTTP_200_OK)
 
+
+class UpdateUserView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def put(self, request):
+        serializer = UserUpdateSerializer(instance=request.user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {'user': UserSerializer(serializer.instance).data},
+                status=status.HTTP_200_OK
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 class SendPasswordResetEmail(APIView):
     permission_classes = [permissions.AllowAny]
 
