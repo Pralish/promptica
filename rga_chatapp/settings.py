@@ -70,6 +70,15 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_CREDENTIALS = True
 
+EMAIL_BACKEND = env('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST = env('EMAIL_HOST', default='smtp-relay.brevo.com')
+EMAIL_PORT = env('EMAIL_PORT', default=587)
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='test@test.com')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='test123')
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'YourApp <your@email.com>'
+FRONTEND_BASE_URL = env('FRONTEND_URL', default='http://127.0.0.1:3000/')
+
 
 TEMPLATES = [
     {
