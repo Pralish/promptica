@@ -78,6 +78,8 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='test123')
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'YourApp <your@email.com>'
 FRONTEND_BASE_URL = env('FRONTEND_URL', default='http://127.0.0.1:3000/')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 
 TEMPLATES = [

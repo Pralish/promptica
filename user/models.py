@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User, AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
+from django.core.validators import FileExtensionValidator
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -24,6 +25,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     dob = models.DateField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+
+    image = models.ImageField(
+        upload_to='user_images/',
+        null=True,
+        blank=True,
+        validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])],
+        )
 
     objects = CustomUserManager()
 
