@@ -55,6 +55,7 @@ INSTALLED_APPS = DJANGO_APPS + OTHER_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -78,9 +79,6 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='test123')
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'YourApp <your@email.com>'
 FRONTEND_BASE_URL = env('FRONTEND_URL', default='http://127.0.0.1:3000/')
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
 
 TEMPLATES = [
     {
@@ -153,6 +151,12 @@ USE_TZ = True
 
 STATIC_URL = env.str("STATIC_URL", default="/static/")  
 STATIC_ROOT = env.str("STATIC_ROOT", default=BASE_DIR / "staticfiles")
+
+MEDIA_ROOT = env("MEDIA_ROOT", default=BASE_DIR / "media")  
+MEDIA_URL = env("MEDIA_PATH", default="/media/")
+
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_AUTOREFRESH = DEBUG
 
 
 # Default primary key field type
