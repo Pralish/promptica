@@ -161,6 +161,7 @@ AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID', default='your-cloudflare-access-key
 AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY', default='your-cloudflare-secret-access-key')
 AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME', default='promptica')
 AWS_S3_ENDPOINT_URL = env('AWS_S3_ENDPOINT_URL', default='https://<your-account-id>.r2.cloudflarestorage.com')
+AWS_S3_SIGNATURE_VERSION = 's3v4'
 
 STATIC_URL = env.str("STATIC_URL", default="/static/")  
 STATIC_ROOT = env.str("STATIC_ROOT", default=BASE_DIR / "staticfiles")
