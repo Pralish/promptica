@@ -75,6 +75,10 @@ CSRF_TRUSTED_ORIGINS = ["https://prompticaserver.applikuapp.com", "https://promp
 
 
 EMAIL_BACKEND = env('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
+
+BREVO_API_KEY = env('BREVO_API_KEY', default='your_brevo_api_key')
+
+
 EMAIL_HOST = env('EMAIL_HOST', default='smtp-relay.brevo.com')
 EMAIL_PORT = env('EMAIL_PORT', default=587)
 EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='test@test.com')
@@ -151,6 +155,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID', default='your-cloudflare-access-key-id')
+AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY', default='your-cloudflare-secret-access-key')
+AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME', default='promptica')
+AWS_S3_ENDPOINT_URL = env('AWS_S3_ENDPOINT_URL', default='https://<your-account-id>.r2.cloudflarestorage.com')
 
 STATIC_URL = env.str("STATIC_URL", default="/static/")  
 STATIC_ROOT = env.str("STATIC_ROOT", default=BASE_DIR / "staticfiles")
