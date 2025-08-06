@@ -172,6 +172,9 @@ MEDIA_URL = env("MEDIA_PATH", default="/media/")
 WHITENOISE_USE_FINDERS = True
 WHITENOISE_AUTOREFRESH = DEBUG
 
+QDRANT_API_KEY = env('QDRANT_API_KEY', default='your_qdrant_api_key')
+QDRANT_URL = env('QDRANT_URL', default='http://localhost:6333')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

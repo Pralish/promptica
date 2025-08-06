@@ -4,6 +4,7 @@ from qdrant_client import QdrantClient,models
 from qdrant_client.http.models import PointStruct
 import uuid
 import re
+from django.conf import settings
 
 from openai import OpenAI
 
@@ -42,7 +43,7 @@ def get_embedding(text_chunks, model_id="text-embedding-ada-002"):
     return points
 
 def delete_qdrant_collections():
-  client = QdrantClient(host="localhost", port=6333)
+  client = qdrant_client()
 
   collections = client.get_collections().collections
 
@@ -51,7 +52,7 @@ def delete_qdrant_collections():
       print(f"Deleted collection: {collection.name}")
 
 def create_qdrant_collection(collection_name):
-    connection = QdrantClient("localhost", port=6333)    
+    connection = qdrant_client()
     connection.create_collection(
         collection_name=collection_name,
         vectors_config=models.VectorParams(size=1536, distance=models.Distance.COSINE),
@@ -59,6 +60,7 @@ def create_qdrant_collection(collection_name):
     info = connection.get_collection(collection_name=collection_name)
 
     return info
+
 
 
 def make_qdrant_safe(name: str):
@@ -76,8 +78,13 @@ print(safe_name)  # Output: Lesson_103_1
 
 
 def add_points_qdrant(collection_name, points):
-    
-    connection = QdrantClient("localhost", port=6333)
+    connection = qdrant_client()
     connection.upsert(collection_name=collection_name, points=points)
     
     return True
+
+def qdrant_client():
+  connection = QdrantClient(
+        url=settings.QDRANT_URL,
+        api_key=settings.QDRANT_API_KEY)
+  return connection

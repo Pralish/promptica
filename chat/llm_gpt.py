@@ -18,9 +18,10 @@ def get_final_prompt(query):
     embeddings = response.data[0].embedding
 
     # Qdrant Client search
-    connection = QdrantClient("localhost", port=6333)
+    connection = QdrantClient(
+        url=settings.QDRANT_URL,
+        api_key=settings.QDRANT_API_KEY)
     processed_docs = Document.objects.filter(processed_at__isnull=False)
-
     
     search_results = []
     for document in processed_docs:
