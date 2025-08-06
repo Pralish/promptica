@@ -71,7 +71,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_CREDENTIALS = True
 
-CSRF_TRUSTED_ORIGINS = ["https://prompticaserver.applikuapp.com", "https://promptica.applikuapp.com"]
+CSRF_TRUSTED_ORIGINS = ["https://prompticaserver.applikuapp.com", "https://promptica.applikuapp.com", "https://promptica.chat", "https://server.promptica.chat"]
 
 
 EMAIL_BACKEND = env('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
