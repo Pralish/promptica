@@ -1,3 +1,5 @@
+from .utils import (read_data_from_pdf, get_text_chunks, get_embedding,
+                    create_qdrant_collection, add_points_qdrant, make_qdrant_safe)
 from django.contrib import admin
 from django.utils import timezone
 from .models import Document
@@ -38,6 +40,20 @@ class UnprocessedDocumentAdmin(admin.ModelAdmin):
     actions = ['process_documents']
     
     def process_documents(self, request, queryset):
+        for document in queryset:
+            pdf_name = f"""{document.title}_{document.id}"""
+            pdf_name = make_qdrant_safe(pdf_name)
+
+            print("Creating Collection for: ", pdf_name)
+            create_qdrant_collection(pdf_name)            
+            pdf_content = read_data_from_pdf(document.file)
+            content_chunks = get_text_chunks(pdf_content)
+            
+            print("Creating Embeddins for: ", pdf_name)
+            embaddings_points = get_embedding(content_chunks)
+            
+            print("Adding Embeddins for: ", pdf_name)
+            add_points_qdrant(pdf_name, embaddings_points)
         """Process selected documents"""
         updated = queryset.update(processed_at=timezone.now())
         self.message_user(request, f'{updated} documents processed successfully.')

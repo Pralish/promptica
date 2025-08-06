@@ -157,10 +157,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID', default='your-cloudflare-access-key-id')
-AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY', default='your-cloudflare-secret-access-key')
-AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME', default='promptica')
-AWS_S3_ENDPOINT_URL = env('AWS_S3_ENDPOINT_URL', default='https://<your-account-id>.r2.cloudflarestorage.com')
+AWS_SECRET_ACCESS_KEY = '1be127d14633c341a3eb749f8d9b81352f63408153b60140d0bb4e3f24629617'
+AWS_ACCESS_KEY_ID = '55572b22737b6b2eba3664f197b58332'
+AWS_S3_ENDPOINT_URL = 'https://a56dc7b18b00ee7ad70be31e6acc3278.r2.cloudflarestorage.com'
+AWS_STORAGE_BUCKET_NAME = 'promptica'
 AWS_S3_SIGNATURE_VERSION = 's3v4'
 
 STATIC_URL = env.str("STATIC_URL", default="/static/")  

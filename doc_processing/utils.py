@@ -1,13 +1,18 @@
 from PyPDF2 import PdfReader
 from langchain.text_splitter import CharacterTextSplitter
 from qdrant_client import QdrantClient,models
-import openai as open_ai
 from qdrant_client.http.models import PointStruct
 import uuid
+import re
 
-def read_data_from_pdf(pdf_path):
+from openai import OpenAI
+
+client = OpenAI()
+
+def read_data_from_pdf(file):
   text = ""
-  with open(pdf_path, 'rb') as file:
+
+  with file.open('rb') as file:
     pdf_reader = PdfReader(file)
     for page in pdf_reader.pages:
       text += page.extract_text()
@@ -20,17 +25,19 @@ def get_text_chunks(text):
   chunks = text_splitter.split_text(text)
   return chunks
 
-
 def get_embedding(text_chunks, model_id="text-embedding-ada-002"):
     points = []
-    for idx, chunk in enumerate(text_chunks):
-        response = open_ai.Embedding.create(
+    for chunk in text_chunks:
+        response = client.embeddings.create(
             input=chunk,
             model=model_id
         )
-        embeddings = response['data'][0]['embedding']
-        points.append(PointStruct(id=str(uuid.uuid4()), vector=embeddings,
-                                   payload={"text": chunk}))
+        embedding = response.data[0].embedding  # dot notation
+        points.append(PointStruct(
+            id=str(uuid.uuid4()),
+            vector=embedding,
+            payload={"text": chunk}
+        ))
 
     return points
 
@@ -50,8 +57,22 @@ def create_qdrant_collection(collection_name):
         vectors_config=models.VectorParams(size=1536, distance=models.Distance.COSINE),
     )
     info = connection.get_collection(collection_name=collection_name)
-    
+
     return info
+
+
+def make_qdrant_safe(name: str):
+    # Replace invalid characters with underscore
+    safe_name = re.sub(r'[^a-zA-Z0-9_-]', '_', name)
+    # Ensure it doesn't start with a digit
+    if safe_name and safe_name[0].isdigit():
+        safe_name = 'c_' + safe_name
+    return safe_name
+
+
+name = "Lesson#103_1"
+safe_name = make_qdrant_safe(name)
+print(safe_name)  # Output: Lesson_103_1
 
 
 def add_points_qdrant(collection_name, points):
