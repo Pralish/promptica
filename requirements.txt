@@ -95,6 +95,7 @@ psycopg2==2.9.9
 pulsar-client==3.4.0
 pyasn1==0.5.1
 pyasn1-modules==0.3.0
+pycryptodome==3.15.0
 pydantic==2.6.3
 pydantic_core==2.16.3
 PyPDF2==3.0.1
