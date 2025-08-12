@@ -49,6 +49,9 @@ def delete_qdrant_collection(collection_name):
 
 def create_qdrant_collection(collection_name):
     connection = qdrant_client()
+    if connection.collection_exists(collection_name):
+       connection.delete_collection(collection_name)
+
     connection.create_collection(
         collection_name=collection_name,
         vectors_config=models.VectorParams(size=1536, distance=models.Distance.COSINE),
