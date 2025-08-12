@@ -10,12 +10,18 @@ from django.contrib.auth.admin import UserAdmin
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import CustomUser
+from .proxies import AuthUserProxy
 
+try:
+    admin.site.unregister(CustomUser)
+except admin.sites.NotRegistered:
+    pass
 
-class CustomUserAdmin(UserAdmin):
+@admin.register(AuthUserProxy)
+class AuthUserProxyAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
-    model = CustomUser
+    model = AuthUserProxy
     list_display = ("email", "is_staff", "is_active",)
     list_filter = ("email", "is_staff", "is_active",)
     fieldsets = (
@@ -33,6 +39,3 @@ class CustomUserAdmin(UserAdmin):
     )
     search_fields = ("email",)
     ordering = ("email",)
-
-
-admin.site.register(CustomUser, CustomUserAdmin)
