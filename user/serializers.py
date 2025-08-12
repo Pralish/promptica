@@ -5,6 +5,8 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import send_mail
 from django.conf import settings
+import brevo_python
+from brevo_python.rest import ApiException
 
 class UserSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(required=False, allow_null=True)
@@ -82,13 +84,19 @@ class PasswordResetSerializer(serializers.Serializer):
         uid = urlsafe_base64_encode(force_bytes(user.pk))
 
         reset_url = f"{settings.FRONTEND_BASE_URL}reset-password/?uid={uid}&token={token}"
-
+        html_message = f"""
+        <p>Hi {user.full_name},</p>
+        <p>Click the link below to reset your password:</p>
+        <p><a href="{reset_url}">Reset Password</a></p>
+        <p>If you did not request this, please ignore this email.</p>
+        """
         send_mail(
             subject="Password Reset",
             message=f"Use this link to reset your password: {reset_url}",
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[user.email],
             fail_silently=True,
+            html_message=html_message
         )
 
 

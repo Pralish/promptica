@@ -46,12 +46,14 @@ DJANGO_APPS = [
 
 ]
 OTHER_APPS = [
+    "anymail",
     "user",
     "chat",
     "doc_processing",
     "django_extensions",
 ]
 INSTALLED_APPS = DJANGO_APPS + OTHER_APPS
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -65,6 +67,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+ANYMAIL = {
+    "BREVO_API_KEY": env("BREVO_API_KEY", default="your_brevo_api_key"),
+}
+
 ROOT_URLCONF = 'rga_chatapp.urls'
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -74,7 +80,7 @@ CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = ["https://prompticaserver.applikuapp.com", "https://promptica.applikuapp.com", "https://promptica.chat", "https://server.promptica.chat"]
 
 
-EMAIL_BACKEND = env('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
+EMAIL_BACKEND = env('EMAIL_BACKEND', default='anymail.backends.brevo.EmailBackend')
 
 BREVO_API_KEY = env('BREVO_API_KEY', default='your_brevo_api_key')
 
