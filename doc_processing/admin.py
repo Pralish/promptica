@@ -1,5 +1,5 @@
 from .utils import (read_data_from_pdf, get_text_chunks, get_embedding,
-                    create_qdrant_collection, add_points_qdrant, make_qdrant_safe)
+                    create_qdrant_collection, add_points_qdrant, make_qdrant_safe, delete_qdrant_collection)
 from django.contrib import admin
 from django.utils import timezone
 from .models import Document
@@ -22,8 +22,16 @@ class ProcessedDocumentAdmin(admin.ModelAdmin):
     
     def unprocess_documents(self, request, queryset):
         """Process selected documents"""
-        updated = queryset.update(processed_at=None)
-        self.message_user(request, f'{updated} documents processed successfully.')
+        for document in queryset:
+            pdf_name = f"""{document.title}_{document.id}"""
+            pdf_name = make_qdrant_safe(pdf_name)
+
+            print("Deleting Collection for: ", pdf_name)
+            # Assuming a function to delete the collection exists
+            delete_qdrant_collection(pdf_name)
+            document.processed_at = None
+            document.save()
+        self.message_user(request, f'Documents unprocessed successfully.')
     unprocess_documents.short_description = "Unprocess selected documents"
 
 class UnprocessedDocumentAdmin(admin.ModelAdmin):

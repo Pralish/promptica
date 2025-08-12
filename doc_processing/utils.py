@@ -42,14 +42,10 @@ def get_embedding(text_chunks, model_id="text-embedding-ada-002"):
 
     return points
 
-def delete_qdrant_collections():
-  client = qdrant_client()
-
-  collections = client.get_collections().collections
-
-  for collection in collections:
-      client.delete_collection(collection.name)
-      print(f"Deleted collection: {collection.name}")
+def delete_qdrant_collection(collection_name):
+    client = qdrant_client()
+    client.delete_collection(collection_name)
+    print(f"Deleted collection: {collection_name}")
 
 def create_qdrant_collection(collection_name):
     connection = qdrant_client()
