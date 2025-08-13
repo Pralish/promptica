@@ -19,7 +19,7 @@ def truncate_to_token_limit(text, max_tokens, model="gpt-3.5-turbo"):
     enc = tiktoken.encoding_for_model(model)
     tokens = enc.encode(text)
     if len(tokens) > max_tokens:
-        tokens = tokens[:max_tokens]
+        tokens = tokens[-max_tokens:]
     return enc.decode(tokens)
 
 def get_final_prompt(query):
@@ -44,7 +44,7 @@ def get_final_prompt(query):
         result = connection.search(
             collection_name=collection_name,
             query_vector=embeddings,
-            limit=2  # reduced from 3 to lower total text
+            limit=3  # reduced from 3 to lower total text
         )
         search_results.extend(result)
 
@@ -53,7 +53,7 @@ def get_final_prompt(query):
     combined_context = "\n".join(prompt_parts)
 
     # Truncate context to avoid exceeding token limit
-    safe_context = truncate_to_token_limit(combined_context, max_tokens=10000, model="gpt-3.5-turbo")  
+    safe_context = truncate_to_token_limit(combined_context, max_tokens=14000, model="gpt-3.5-turbo")  
 
     final_prompt = f"""This is the previous data or context:
 
