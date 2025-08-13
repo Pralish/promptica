@@ -89,6 +89,18 @@ def get_llm(query, conver_id):
 def get_llm_qdrant(query, conver_id):
     memory = ConversationBufferMemory()
     prompt = get_final_prompt(query)
+    memorybuffer = Message.objects.filter(
+        conversation_id=conver_id
+    ).order_by('-created_at')[:6]
+
+    # Step 2: Reverse to chronological order
+    memorybuffer = list(memorybuffer)[::-1]
+
+    # Step 3: Initialize memory and preload messages
+    memory = ConversationBufferMemory()
+    for msg in memorybuffer:
+        memory.chat_memory.add_user_message(msg.query)
+        memory.chat_memory.add_ai_message(msg.response)
     memory.chat_memory.add_user_message(prompt)
     memory.load_memory_variables({})
 
